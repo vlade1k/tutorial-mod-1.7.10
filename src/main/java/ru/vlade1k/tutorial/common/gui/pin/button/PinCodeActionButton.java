@@ -1,7 +1,7 @@
 package ru.vlade1k.tutorial.common.gui.pin.button;
 
-import net.minecraft.client.Minecraft;
 import cpw.mods.fml.client.config.GuiButtonExt;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
@@ -9,30 +9,22 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
 
-public class PinCodeButton extends GuiButtonExt {
-
+public class PinCodeActionButton extends GuiButtonExt {
   private final ResourceLocation texture;
   private int textureWidth, textureHeight;
-  private int value;
-
-  private int xPos, yPos;
-
   private float U, V;
-
   private FontRenderer font;
 
-  public PinCodeButton(int value, int id, int xPos, int yPos, String displayString,
+
+  public PinCodeActionButton(int id, int xPos, int yPos, String displayString,
       ResourceLocation texture, int width, int height) {
     super(id, xPos, yPos, displayString);
-    this.xPos = xPos;
-    this.yPos = yPos;
     this.texture = texture;
     this.textureWidth = width;
     this.textureHeight = height;
     this.width = width;
     this.height = height;
     this.font = Minecraft.getMinecraft().fontRenderer;
-    this.value = value;
     this.U = this.V = 0;
 
   }
@@ -53,16 +45,11 @@ public class PinCodeButton extends GuiButtonExt {
     GL11.glPushMatrix();
     GL11.glTranslatef(this.xPosition + (14), this.yPosition + (this.height - (3f)) / 2, 1f);
     GL11.glScalef((0.6f), (0.6f), (0.6f));
-    this.drawCenteredString(font, Integer.toString(value), -15, 0, field_146123_n ? Color.WHITE.getRGB() : Color.GRAY.getRGB());
+    this.drawCenteredString(font, displayString,-15, 0, field_146123_n ? Color.WHITE.getRGB() : Color.GRAY.getRGB());
     GL11.glPopMatrix();
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glEnable(GL11.GL_ALPHA_TEST);
     GL11.glPopMatrix();
-  }
-
-
-  public int getValue() {
-    return value;
   }
 
 }
