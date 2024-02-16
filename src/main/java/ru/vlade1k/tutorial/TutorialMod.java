@@ -24,6 +24,14 @@ public class TutorialMod {
   )
   public static CommonProxy proxy;
 
+<<<<<<< HEAD
+=======
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event){
+        EntityRegistry.registerModEntity(EntityThrowableItem.class, "throwable", 4, this, 80, 3, true);
+        proxy.init(event);
+    }
+>>>>>>> parent of ae292d4 (add pin-code gui on pin-code storage)
 
   @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event) {

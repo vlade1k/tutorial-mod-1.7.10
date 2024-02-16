@@ -6,16 +6,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import ru.vlade1k.tutorial.TutorialMod;
-import ru.vlade1k.tutorial.common.gui.pin.PinCodeGui;
 import ru.vlade1k.tutorial.common.handler.ModTab;
 import ru.vlade1k.tutorial.common.tile.TilePinCodeStorage;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BlockPinCodeStorage extends BlockContainer {
@@ -28,44 +27,38 @@ public class BlockPinCodeStorage extends BlockContainer {
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz) {
-    if (world.isRemote) return true;
+  public boolean onBlockActivated(World world, int xCoord, int yCoord, int zCoord, EntityPlayer activator,
+      int side, float hitX, float hitY, float hitZ) {
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te != null && te instanceof TilePinCodeStorage) {
-      //player.openGui(TutorialMod.INSTANCE, 0, world , x, y, z);
-      Minecraft.getMinecraft().displayGuiScreen(new PinCodeGui((TilePinCodeStorage) te, player, x, y, z));
-      return true;
+    if (!world.isRemote) {
+      TileEntity tile = world.getTileEntity(xCoord, yCoord, zCoord);
+      if (tile instanceof TilePinCodeStorage) {
+        TilePinCodeStorage storageTile = (TilePinCodeStorage) tile;
+        activator.openGui(TutorialMod.INSTANCE, 0, world, xCoord, yCoord, zCoord);
+      }
     }
-    return false;
+    return true;
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
-    if (world.isRemote) return;
-
-    ArrayList drops = new ArrayList();
-
-    TileEntity teRaw = world.getTileEntity(x, y, z);
-
-    if (teRaw != null && teRaw instanceof TilePinCodeStorage) {
-      TilePinCodeStorage te = (TilePinCodeStorage) teRaw;
-
-      for (int i = 0; i < te.getSizeInventory(); i++) {
-        ItemStack stack = te.getStackInSlot(i);
-
-        if (stack != null) drops.add(stack.copy());
+  public void breakBlock(World world, int x, int y, int z, Block block, int wtf) {
+    if (!world.isRemote) {
+      TileEntity tile = world.getTileEntity(x, y, z);
+      if (tile instanceof TilePinCodeStorage) {
+        TilePinCodeStorage storageTile = (TilePinCodeStorage) tile;
+        ItemStack[] storageItems = storageTile.getStorageItems();
+        for (int i = 0; i < storageTile.getStorageSize(); i++) {
+          if (storageItems[i] != null) {
+            EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, storageItems[i].copy());
+            world.spawnEntityInWorld(item);
+          }
+        }
       }
-    }
-
-    for (int i = 0;i < drops.size();i++) {
-      EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, (ItemStack) drops.get(i));
-      item.setVelocity((rand.nextDouble() - 0.5) * 0.25, rand.nextDouble() * 0.5 * 0.25, (rand.nextDouble() - 0.5) * 0.25);
-      world.spawnEntityInWorld(item);
     }
   }
 
-  public TileEntity createNewTileEntity(World world, int par2) {
+  @Override
+  public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
     return new TilePinCodeStorage();
   }
 }
