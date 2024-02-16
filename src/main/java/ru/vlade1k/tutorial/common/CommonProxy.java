@@ -3,10 +3,12 @@ package ru.vlade1k.tutorial.common;
 import static ru.vlade1k.tutorial.common.handler.ModBlocks.PIN_CODE_CHEST;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import ru.vlade1k.tutorial.TutorialMod;
+import ru.vlade1k.tutorial.common.gui.GuiHandler;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import ru.vlade1k.tutorial.common.handler.ModBlocks;
@@ -21,7 +23,7 @@ public class CommonProxy {
         ModBlocks.register();
         ModItems.register();
         ModEntity.register();
-        registerRenderThings();
+        NetworkRegistry.INSTANCE.registerGuiHandler(TutorialMod.INSTANCE, new GuiHandler());
     }
 
     public void init(FMLInitializationEvent event) {

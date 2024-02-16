@@ -19,6 +19,7 @@ public class StickItem extends Item {
         setCreativeTab(ModTab.INSTANCE);
         setUnlocalizedName("lightStick");
         setTextureName(TutorialMod.MOD_ID + ":stickOfTheTruth");
+        setMaxStackSize(1);
     }
 
     @Override
@@ -33,4 +34,6 @@ public class StickItem extends Item {
 
         return itemStack;
     }
+
+
 }
