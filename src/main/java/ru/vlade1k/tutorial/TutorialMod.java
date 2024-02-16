@@ -33,6 +33,7 @@ public class TutorialMod {
     public void init(FMLInitializationEvent event){
         EntityRegistry.registerModEntity(EntityThrowableItem.class, "throwable", 4, this, 80, 3, true);
         proxy.init(event);
+        INSTANCE = this;
     }
 
     @Mod.EventHandler
