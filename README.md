@@ -6,7 +6,4 @@ Now added:
 - Throwable item(damage: 10)
 - Storage Block(Tile Entity which storaging anybody item)
 - Magic wand(spawn thunderbolt where the player is looking)
-- Storage Block with pin-code
-  
-Work is underway on:
-- Beauty GUI for Pin-code block
+
