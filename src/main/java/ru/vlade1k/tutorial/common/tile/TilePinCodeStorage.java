@@ -84,6 +84,10 @@ public class TilePinCodeStorage extends TileEntity implements IInventory {
         items[j] = ItemStack.loadItemStackFromNBT(comp);
       }
     }
+
+    pinCodeLock.setPassword(nbt.getString("lockPass"));
+    pinCodeLock.setPasswordStatus(nbt.getBoolean("passStatus"));
+
   }
 
   @Override
@@ -101,6 +105,9 @@ public class TilePinCodeStorage extends TileEntity implements IInventory {
     }
 
     nbt.setTag("Items", list);
+
+    nbt.setString("lockPass", pinCodeLock.getPassword());
+    nbt.setBoolean("passStatus", pinCodeLock.getPasswordStatus());
   }
 
   public int getInventoryStackLimit() {

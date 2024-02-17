@@ -22,6 +22,9 @@ public class PinCodeGui extends GuiScreen {
   private TilePinCodeStorage tileEntity;
   private EntityPlayer player;
   private int x, y, z;
+  private boolean isHiddenVisible = false;
+  private boolean isDefaultMode = false;
+
 
   public PinCodeGui(TilePinCodeStorage tileEntity, EntityPlayer player, int x, int y, int z) {
     this.tileEntity = tileEntity;
@@ -59,11 +62,16 @@ public class PinCodeGui extends GuiScreen {
     this.buttonList.add(new PinCodeNumButton(8, 0, (int) xPosition + 35, (int) yPosition + 70, "",
         BUTTON, 10, 10));
 
+    this.buttonList.add(new PinCodeActionButton(-2, (int) xPosition + 5, (int) yPosition + 85, "C",
+        BUTTON, 10, 10));
     this.buttonList.add(new PinCodeNumButton(9, 0, (int) xPosition + 20, (int) yPosition + 85, "",
         BUTTON, 10, 10));
     this.buttonList.add(new PinCodeActionButton(-1, (int) xPosition + 35, (int) yPosition + 85, "<",
         BUTTON, 10, 10));
-    this.buttonList.add(new PinCodeActionButton(-2, (int) xPosition + 5, (int) yPosition + 85, "C",
+
+    this.buttonList.add(new PinCodeActionButton(-3, (int) xPosition + 55, (int) yPosition + 40, "*",
+        BUTTON, 10, 10));
+    this.buttonList.add(new PinCodeActionButton(-4, (int) xPosition + 55, (int) yPosition + 55, "S",
         BUTTON, 10, 10));
   }
 
@@ -83,12 +91,12 @@ public class PinCodeGui extends GuiScreen {
         0, 0, 100, 100, 100, 100);
 
     this.mc.getTextureManager().bindTexture(NUMS_PANEL);
-    GuiHelper.drawTextureCustomSize(xPosition + 10, yPosition + 18,
-        0, 0, 80, 12, 80, 12);
+    GuiHelper.drawTextureCustomSize(xPosition + 10, yPosition + 17,
+        0, 0, 80, 13, 80, 13);
 
     String enteredPassword = tileEntity.getPinCodeLock().getEnteredPassword();
     for (int i = 0; i < enteredPassword.length(); i++) {
-      drawString(fontRendererObj, Character.toString(enteredPassword.charAt(i)),
+      drawString(fontRendererObj, isHiddenVisible ? "*" : Character.toString(enteredPassword.charAt(i)),
           (int) xPosition + 15 + i * 16, (int) yPosition + 20, Color.GREEN.getRGB());
     }
 
@@ -103,7 +111,8 @@ public class PinCodeGui extends GuiScreen {
       if (button instanceof PinCodeNumButton) {
         PinCodeNumButton pinButton = (PinCodeNumButton) button;
         tileEntity.getPinCodeLock().getEnteredNum(pinButton.getValue());
-        if (tileEntity.getPinCodeLock().isCorrectPassword()) {
+        isDefaultMode = tileEntity.getPinCodeLock().getPasswordStatus();
+        if (isDefaultMode && tileEntity.getPinCodeLock().isCorrectPassword()) {
           tileEntity.getPinCodeLock().cleanEnteredPassword();
           this.mc.displayGuiScreen(null);
           player.openGui(TutorialMod.INSTANCE, 0, player.worldObj, x, y, z);
@@ -118,6 +127,20 @@ public class PinCodeGui extends GuiScreen {
       if (button instanceof PinCodeActionButton) {
         tileEntity.getPinCodeLock().cleanEnteredPassword();
         System.out.println(tileEntity.getPinCodeLock().getEnteredPassword());
+      }
+    } else if (button.id == -3) {
+      if (button instanceof PinCodeActionButton) {
+        isHiddenVisible = !isHiddenVisible;
+      }
+    } else if (button.id == -4) {
+      if (button instanceof PinCodeActionButton) {
+        System.out.println(tileEntity.getPinCodeLock().getPasswordStatus());
+        System.out.println(tileEntity.getPinCodeLock().getPassword());
+        if (!tileEntity.getPinCodeLock().getPasswordStatus() && tileEntity.getPinCodeLock().getEnteredPassword().length() == 5) {
+          tileEntity.getPinCodeLock().setPasswordStatus(true);
+          tileEntity.getPinCodeLock().setPassword(tileEntity.getPinCodeLock().getEnteredPassword());
+          tileEntity.getPinCodeLock().cleanEnteredPassword();
+        }
       }
     }
   }
