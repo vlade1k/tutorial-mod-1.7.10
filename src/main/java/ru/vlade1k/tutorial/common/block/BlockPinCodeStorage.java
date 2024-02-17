@@ -33,7 +33,6 @@ public class BlockPinCodeStorage extends BlockContainer {
 
     TileEntity te = world.getTileEntity(x, y, z);
     if (te != null && te instanceof TilePinCodeStorage) {
-      //player.openGui(TutorialMod.INSTANCE, 0, world , x, y, z);
       Minecraft.getMinecraft().displayGuiScreen(new PinCodeGui((TilePinCodeStorage) te, player, x, y, z));
       return true;
     }

@@ -12,8 +12,8 @@ import ru.vlade1k.tutorial.common.help.lock.PinCodeLock;
 public class TilePinCodeStorage extends TileEntity implements IInventory {
 
   private ItemStack[] items = new ItemStack[15];
-
   private PinCodeLock pinCodeLock = new PinCodeLock();
+
 
   public int getSizeInventory() {
     return items.length;

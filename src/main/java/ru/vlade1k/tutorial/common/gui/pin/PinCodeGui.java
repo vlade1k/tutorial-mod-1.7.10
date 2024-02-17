@@ -121,12 +121,10 @@ public class PinCodeGui extends GuiScreen {
     } else if (button.id == -1) {
       if (button instanceof PinCodeActionButton) {
         tileEntity.getPinCodeLock().decrEnteredPassword();
-        System.out.println(tileEntity.getPinCodeLock().getEnteredPassword());
       }
     } else if (button.id == -2) {
       if (button instanceof PinCodeActionButton) {
         tileEntity.getPinCodeLock().cleanEnteredPassword();
-        System.out.println(tileEntity.getPinCodeLock().getEnteredPassword());
       }
     } else if (button.id == -3) {
       if (button instanceof PinCodeActionButton) {
@@ -134,8 +132,6 @@ public class PinCodeGui extends GuiScreen {
       }
     } else if (button.id == -4) {
       if (button instanceof PinCodeActionButton) {
-        System.out.println(tileEntity.getPinCodeLock().getPasswordStatus());
-        System.out.println(tileEntity.getPinCodeLock().getPassword());
         if (!tileEntity.getPinCodeLock().getPasswordStatus() && tileEntity.getPinCodeLock().getEnteredPassword().length() == 5) {
           tileEntity.getPinCodeLock().setPasswordStatus(true);
           tileEntity.getPinCodeLock().setPassword(tileEntity.getPinCodeLock().getEnteredPassword());
