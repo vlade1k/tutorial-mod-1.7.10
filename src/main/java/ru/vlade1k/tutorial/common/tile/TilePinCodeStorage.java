@@ -129,6 +129,11 @@ public class TilePinCodeStorage extends TileEntity implements IInventory {
     return true;
   }
 
+  public void cleanItems(){
+    this.items = null;
+    markDirty();
+  }
+
   public PinCodeLock getPinCodeLock(){
     return pinCodeLock;
   }

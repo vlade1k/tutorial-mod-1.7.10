@@ -30,11 +30,12 @@ public class BlockPinCodeStorage extends BlockContainer {
   private IIcon blockIcon;
   private IIcon frontBlockIcon;
 
-  private final Random rand = new Random();
+
   public BlockPinCodeStorage() {
-    super(Material.wood);
+    super(Material.iron);
     setBlockName("storage");
     setCreativeTab(ModTab.INSTANCE);
+    setHardness(3F);
   }
 
   @Override
@@ -53,24 +54,11 @@ public class BlockPinCodeStorage extends BlockContainer {
   public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
     if (world.isRemote) return;
 
-    ArrayList drops = new ArrayList();
-
     TileEntity teRaw = world.getTileEntity(x, y, z);
 
     if (teRaw != null && teRaw instanceof TilePinCodeStorage) {
       TilePinCodeStorage te = (TilePinCodeStorage) teRaw;
-
-      for (int i = 0; i < te.getSizeInventory(); i++) {
-        ItemStack stack = te.getStackInSlot(i);
-
-        if (stack != null) drops.add(stack.copy());
-      }
-    }
-
-    for (int i = 0;i < drops.size();i++) {
-      EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, (ItemStack) drops.get(i));
-      item.setVelocity((rand.nextDouble() - 0.5) * 0.25, rand.nextDouble() * 0.5 * 0.25, (rand.nextDouble() - 0.5) * 0.25);
-      world.spawnEntityInWorld(item);
+      te.cleanItems();
     }
   }
 
