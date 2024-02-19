@@ -6,5 +6,5 @@ Now added:
 - Throwable item(damage: 10)
 - Storage Block(Tile Entity which storaging anybody item)
 - Magic wand(spawn thunderbolt where the player is looking)
-- Block-Container with Pin-Code lock
+- Block-Container with Pin-Code lock(and item which correctly removing him)
 
