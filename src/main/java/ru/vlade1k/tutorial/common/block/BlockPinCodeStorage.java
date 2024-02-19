@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import ru.vlade1k.tutorial.TutorialMod;
 import ru.vlade1k.tutorial.common.gui.pin.PinCodeGui;
 import ru.vlade1k.tutorial.common.handler.ModTab;
+import ru.vlade1k.tutorial.common.item.StorageToolItem;
 import ru.vlade1k.tutorial.common.tile.TilePinCodeStorage;
 
 import java.util.ArrayList;
@@ -41,10 +42,21 @@ public class BlockPinCodeStorage extends BlockContainer {
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz) {
     if (world.isRemote) return true;
-
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te != null && te instanceof TilePinCodeStorage) {
-      Minecraft.getMinecraft().displayGuiScreen(new PinCodeGui((TilePinCodeStorage) te, player, x, y, z));
+    TileEntity tile = world.getTileEntity(x, y, z);
+    if (tile instanceof TilePinCodeStorage) {
+      if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof StorageToolItem) {
+        TilePinCodeStorage storageTile = (TilePinCodeStorage) tile;
+        ItemStack[] storageItems = storageTile.getItems();
+        for (int i = 0; i < storageTile.getSizeInventory(); i++) {
+          if (storageItems[i] != null) {
+            EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, storageItems[i].copy());
+            world.spawnEntityInWorld(item);
+          }
+        }
+        world.func_147480_a(x, y, z, true);
+        return true;
+      }
+      Minecraft.getMinecraft().displayGuiScreen(new PinCodeGui((TilePinCodeStorage) tile, player, x, y, z));
       return true;
     }
     return false;

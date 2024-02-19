@@ -138,5 +138,9 @@ public class TilePinCodeStorage extends TileEntity implements IInventory {
     return pinCodeLock;
   }
 
+  public ItemStack[] getItems() {
+    return items;
+  }
+
 
 }
